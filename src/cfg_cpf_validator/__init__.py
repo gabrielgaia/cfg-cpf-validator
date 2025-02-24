@@ -1,6 +1,6 @@
 import typing as t
 
-import cfg_cpf_validator.cfg as c
+from cfg_cpf_validator import cfg, check_digits
 
 
 def validate(
@@ -18,9 +18,8 @@ def validate(
     Retorna:
         bool: Indica se o CPF é válido.
     """
+    cpf_structure = cfg.validate_structure(cpf)
+    d1, d2 = check_digits.calculate_check_digits(cpf)
+    cpf_check_digits = cfg.validate_check_digits(cpf, d1, d2)
 
-    structure = c.validate_structure(cpf)
-    d1, d2 = c.calcular_digito_verificador(cpf)
-    check_digits = c.validate_check_digits(cpf, d1, d2)
-
-    return structure and check_digits
+    return cpf_structure and cpf_check_digits
