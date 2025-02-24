@@ -33,11 +33,15 @@ def validate_structure(
 
     Retorna:
         tuple: Tupla contendo um boolean indicando se a estrutura do CPF é
-        valida e um objeto `nltk.tree.Tree` com as derivações do CPF na CFG.
+        valida e um objeto `nltk.tree.Tree` com as derivações do CPF na CFG,
+        caso o CPF seja válido.
     """
     tokens = list(str(cpf))
-    tree = next(structure_parser.parse(tokens))
-    return bool(tree), tree
+    try:
+        tree = next(structure_parser.parse(tokens))
+        return bool(tree), tree
+    except StopIteration:
+        return False, None
 
 
 def validate_check_digits(
@@ -59,7 +63,8 @@ def validate_check_digits(
     Retorna:
         tuple: Tupla contento um boolean indicando se os dígitos verificadores
         do CPF estão corretos e um objeto `nltk.tree.Tree` com as derivações dos
-        dígitos verificadores na CFG.
+        dígitos verificadores na CFG, caso os dígitos verificadores sejam
+        válidos.
     """
     cfg_check_digits_productions = jinja.Template(
         CFG_CHECK_DIGITS_PRODUCTIONS_TEMPLATE
@@ -73,5 +78,5 @@ def validate_check_digits(
     try:
         tree = next(check_digits_parser.parse(tokens))
         return bool(tree), tree
-    except ValueError:
-        return False
+    except StopIteration:
+        return False, None
