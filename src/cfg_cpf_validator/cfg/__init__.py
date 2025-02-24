@@ -33,12 +33,10 @@ def validate_structure(
 
     Retorna:
         tuple: Tupla contendo um boolean indicando se a estrutura do CPF é
-        valida e uma lista com as derivações do CPF na CFG.
+        valida e um objeto nltk.tree.Tree com as derivações do CPF na CFG.
     """
     tokens = list(str(cpf))
-    tree = list()
-    for leaf in structure_parser.parse(tokens):
-        tree.append(leaf)
+    tree = next(structure_parser.parse(tokens))
     return bool(tree), tree
 
 
