@@ -24,7 +24,7 @@ def validate_structure(
         str,
         int,
     ],
-) -> bool:
+) -> tuple:
     """
     Valida estrutura de um CPF com base em uma Gramática Livre de Contexto.
 
@@ -32,13 +32,14 @@ def validate_structure(
         cpf (str | int): CPF a ser validado.
 
     Retorna:
-        bool: Indica se a estrutura do CPF é válida.
+        tuple: Tupla contendo um boolean indicando se a estrutura do CPF é
+        valida e uma lista com as derivações do CPF na CFG.
     """
     tokens = list(str(cpf))
     tree = list()
     for leaf in structure_parser.parse(tokens):
         tree.append(leaf)
-    return bool(tree)
+    return bool(tree), tree
 
 
 def validate_check_digits(
