@@ -71,7 +71,7 @@ def validate_check_digits(
 
     tokens = list(str(cpf)[-2:])
     try:
-        tree = check_digits_parser.parse(tokens)
+        tree = next(check_digits_parser.parse(tokens))
         return bool(tree), tree
     except ValueError:
         return False
